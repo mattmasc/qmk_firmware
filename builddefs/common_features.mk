@@ -233,7 +233,7 @@ else
         COMMON_VPATH += $(PLATFORM_PATH)/$(PLATFORM_KEY)/$(DRIVER_DIR)/flash
         COMMON_VPATH += $(DRIVER_PATH)/flash
         SRC += eeprom_driver.c eeprom_legacy_emulated_flash.c legacy_flash_ops.c
-      else ifneq ($(filter $(MCU_SERIES),STM32F1xx STM32F3xx STM32F4xx STM32L4xx STM32G4xx WB32F3G71xx WB32FQ95xx GD32VF103),)
+      else ifneq ($(filter $(MCU_SERIES),STM32F1xx STM32F3xx STM32F4xx STM32G4xx WB32F3G71xx WB32FQ95xx GD32VF103),)
         # Wear-leveling EEPROM implementation, backed by MCU flash
         OPT_DEFS += -DEEPROM_DRIVER -DEEPROM_WEAR_LEVELING
         SRC += eeprom_driver.c eeprom_wear_leveling.c
@@ -242,6 +242,12 @@ else
         # True EEPROM on STM32L0xx, L1xx
         OPT_DEFS += -DEEPROM_DRIVER -DEEPROM_STM32_L0_L1
         SRC += eeprom_driver.c eeprom_stm32_L0_L1.c
+      else ifneq ($(filter $(MCU_SERIES),STM32L4xx),)
+        OPT_DEFS += -DEEPROM_DRIVER -DEEPROM_STM32_L4
+        COMMON_VPATH += $(DRIVER_PATH)/eeprom
+        SRC += eeprom_driver.c
+        SRC += $(PLATFORM_COMMON_DIR)/eeprom_stm32_l4.c
+        SRC += $(PLATFORM_COMMON_DIR)/flash_stm32.c
       else ifneq ($(filter $(MCU_SERIES),RP2040),)
         # Wear-leveling EEPROM implementation, backed by RP2040 flash
         OPT_DEFS += -DEEPROM_DRIVER -DEEPROM_WEAR_LEVELING
