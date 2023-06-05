@@ -31,6 +31,9 @@
 
 #define POWER_ON_LED_DURATION 3000
 
+#define DEFAULT_WIN_INDEX 0
+#define DEFAULT_MAC_INDEX 1
+
 typedef struct PACKED {
     uint8_t len;
     uint8_t keycode[3];
@@ -60,7 +63,7 @@ static void pairing_key_timer_cb(void *arg) {
 
 bool dip_switch_update_kb(uint8_t index, bool active) {
     if (index == 0) {
-        default_layer_set(1UL << (active ? 1 : 0));
+        default_layer_set(1UL << (active ? DEFAULT_WIN_INDEX : DEFAULT_MAC_INDEX));
     }
     dip_switch_update_user(index, active);
 
